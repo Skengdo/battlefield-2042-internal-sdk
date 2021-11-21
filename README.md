@@ -67,7 +67,7 @@ Usage:
 		return IsValidPtr((void*)static_cast<cClientPlayer*>(clPlayer)->GetSoldierEntity());
 	};
 
-	auto IsVehicle = [](cClientEntity* const clPlayer) -> bool {
+	auto IsInVehicle = [](cClientEntity* const clPlayer) -> bool {
 		return IsValidPtr((void*)static_cast<cClientVehicle*>(clPlayer)->GetVehicleEntity());
 	};
 
@@ -123,7 +123,7 @@ Usage:
 			}
 		}
 
-		if (IsVehicle(ClientPlayer))
+		if (IsInVehicle(ClientPlayer))
 		{
 			const auto VehicleEnity = static_cast<cClientVehicle*>(ClientPlayer)->GetVehicleEntity();
 
