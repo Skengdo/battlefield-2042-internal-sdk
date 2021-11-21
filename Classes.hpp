@@ -264,20 +264,29 @@ namespace SDK
 	class cVehicleEntity : public cClEntity
 	{
 	public:
-		auto GetPosition(utils::maths::vec3_t* Position) -> bool
+		auto GetPosition(utils::maths::vec3_t* Position, bool Internal = true) -> bool
 		{
-			auto pCollection = 
-				*reinterpret_cast<uintptr_t*>(reinterpret_cast<uintptr_t>(this) + offsets::TransformCollection);
+			D3DMATRIX Transform{};
 
-			if (!IsValidPtr((void*)pCollection))
-				return false;
+			if (!Internal)
+			{
+				auto pCollection =
+					*reinterpret_cast<uintptr_t*>(reinterpret_cast<uintptr_t>(this) + offsets::TransformCollection);
 
-			int8_t _9 = *reinterpret_cast<int8_t*>(pCollection + 9);
-			int8_t _10 = *reinterpret_cast<int8_t*>(pCollection + 10);
+				if (!IsValidPtr((void*)pCollection))
+					return false;
 
-			uintptr_t ComponentCollectionOffset = 0x20 * (_9 + (2 * _10));
+				int8_t _9 = *reinterpret_cast<int8_t*>(pCollection + 9);
+				int8_t _10 = *reinterpret_cast<int8_t*>(pCollection + 10);
 
-			auto Transform = *reinterpret_cast<D3DMATRIX*>(pCollection + ComponentCollectionOffset + 0x10);
+				uintptr_t ComponentCollectionOffset = 0x20 * (_9 + (2 * _10));
+
+				Transform = *reinterpret_cast<D3DMATRIX*>(pCollection + ComponentCollectionOffset + 0x10);
+			}
+			else
+			{
+				this->GetTransformAABBInternal(&Transform);
+			}
 
 			*Position = functions::ExtractPos(Transform);
 
