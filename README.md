@@ -18,6 +18,9 @@ Note: SDK may have issues as it is not fully complete yet, I am still working on
 Usage:
 
 ```cpp
+        /* Initialize Module Address and Resolution */
+        SDK::Init();
+	
 	const auto GameRenderer = cGameRenderer::GetInstance();
 
 	if (!IsValidPtr((void*)GameRenderer))
